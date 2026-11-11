@@ -1,0 +1,21 @@
+<header class="barra">
+  <div class="barra-contenido">
+    <span class="marca">Préstamo de equipo tecnológico</span>
+    @if (api.usuario(); as usuario) {
+      <nav>
+        <a routerLink="/equipos" routerLinkActive="activo">Equipos disponibles</a>
+        <a routerLink="/prestamos" routerLinkActive="activo">
+          {{ usuario.rol === 'RESPONSABLE' ? 'Préstamos' : 'Mis préstamos' }}
+        </a>
+      </nav>
+      <div class="sesion">
+        <span>{{ usuario.nombre }} · {{ usuario.rol }}</span>
+        <button type="button" class="secundario" (click)="salir()">Salir</button>
+      </div>
+    }
+  </div>
+</header>
+
+<main class="contenido">
+  <router-outlet />
+</main>

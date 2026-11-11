@@ -1,0 +1,170 @@
+:root {
+  --primario: #0b5d4e;
+  --primario-oscuro: #084539;
+  --fondo: #f4f6f5;
+  --tarjeta: #ffffff;
+  --borde: #d5dbd9;
+  --texto: #1c2422;
+  --texto-suave: #5b6865;
+  --error: #b3261e;
+  --exito: #1b6e3c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.45;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 4px;
+}
+
+.subtitulo {
+  color: var(--texto-suave);
+  margin: 0 0 20px;
+}
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--borde);
+  white-space: nowrap;
+}
+
+th {
+  color: var(--texto-suave);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+button,
+.boton {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--primario);
+  background: var(--primario);
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover,
+.boton:hover {
+  background: var(--primario-oscuro);
+}
+
+button.secundario,
+.boton.secundario {
+  background: #fff;
+  color: var(--primario);
+}
+
+button.peligro {
+  background: #fff;
+  color: var(--error);
+  border-color: var(--error);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+input {
+  font: inherit;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
+.mensaje {
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.93rem;
+}
+
+.mensaje.error {
+  background: #fdecea;
+  color: var(--error);
+}
+
+.mensaje.exito {
+  background: #e6f4ea;
+  color: var(--exito);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: #e8ecea;
+  color: var(--texto);
+}
+
+.etiqueta.SOLICITADO { background: #fff4d6; color: #7a5600; }
+.etiqueta.AUTORIZADO { background: #dcebff; color: #0b4a99; }
+.etiqueta.ENTREGADO, .etiqueta.PRESTADO { background: #ede3ff; color: #5a2ca0; }
+.etiqueta.DEVUELTO, .etiqueta.DISPONIBLE { background: #e6f4ea; color: #1b6e3c; }
+.etiqueta.RECHAZADO { background: #fdecea; color: #b3261e; }
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.vacio {
+  color: var(--texto-suave);
+  padding: 12px 0;
+}
+
+td button,
+td .boton {
+  padding: 5px 10px;
+  font-size: 0.88rem;
+}

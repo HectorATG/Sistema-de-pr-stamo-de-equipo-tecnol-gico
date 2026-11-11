@@ -1,0 +1,32 @@
+<h1>Solicitar préstamo</h1>
+<p class="subtitulo">Indica las fechas en las que necesitas el equipo.</p>
+
+@if (error) {
+  <div class="mensaje error">{{ error }}</div>
+}
+
+<section class="tarjeta formulario">
+  @if (equipo) {
+    <p class="equipo">
+      <strong>{{ equipo.nombre }}</strong><br />
+      {{ equipo.tipo }} · Serie {{ equipo.numeroSerie }}
+    </p>
+
+    <form (ngSubmit)="enviar()">
+      <label for="fechaInicio">Fecha de inicio</label>
+      <input id="fechaInicio" name="fechaInicio" type="date" [(ngModel)]="fechaInicio" required />
+
+      <label for="fechaFin">Fecha de fin</label>
+      <input id="fechaFin" name="fechaFin" type="date" [(ngModel)]="fechaFin" [min]="fechaInicio" required />
+
+      <div class="acciones">
+        <button type="submit" [disabled]="enviando || !fechaInicio || !fechaFin">
+          {{ enviando ? 'Enviando…' : 'Enviar solicitud' }}
+        </button>
+        <a class="boton secundario" routerLink="/equipos">Cancelar</a>
+      </div>
+    </form>
+  } @else {
+    <a class="boton secundario" routerLink="/equipos">Volver a equipos disponibles</a>
+  }
+</section>

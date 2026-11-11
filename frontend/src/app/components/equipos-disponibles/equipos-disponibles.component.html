@@ -1,0 +1,43 @@
+<h1>Equipos disponibles</h1>
+<p class="subtitulo">Laptops, proyectores y kits que se pueden solicitar en este momento.</p>
+
+@if (error) {
+  <div class="mensaje error">{{ error }}</div>
+}
+
+<section class="tarjeta">
+  @if (cargando) {
+    <p class="vacio">Cargando…</p>
+  } @else if (equipos.length === 0) {
+    <p class="vacio">No hay equipos disponibles por ahora.</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Equipo</th>
+            <th>Tipo</th>
+            <th>No. de serie</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (equipo of equipos; track equipo.id) {
+            <tr>
+              <td>{{ equipo.nombre }}</td>
+              <td>{{ equipo.tipo }}</td>
+              <td>{{ equipo.numeroSerie }}</td>
+              <td><span [class]="'etiqueta ' + equipo.estado">{{ equipo.estado }}</span></td>
+              <td>
+                @if (api.usuario()?.rol === 'SOLICITANTE') {
+                  <a class="boton" [routerLink]="['/solicitud', equipo.id]">Solicitar</a>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

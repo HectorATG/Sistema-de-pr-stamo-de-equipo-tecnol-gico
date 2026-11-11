@@ -1,0 +1,32 @@
+<section class="tarjeta login">
+  <h1>Iniciar sesión</h1>
+  <p class="subtitulo">Usa tu usuario de solicitante o de responsable.</p>
+
+  @if (error) {
+    <div class="mensaje error">{{ error }}</div>
+  }
+
+  <form (ngSubmit)="entrar()">
+    <label for="username">Usuario</label>
+    <input id="username" name="username" [(ngModel)]="username" autocomplete="username" required />
+
+    <label for="password">Contraseña</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      [(ngModel)]="password"
+      autocomplete="current-password"
+      required
+    />
+
+    <button type="submit" [disabled]="cargando || !username || !password">
+      {{ cargando ? 'Entrando…' : 'Entrar' }}
+    </button>
+  </form>
+
+  <p class="ayuda">
+    Usuarios de prueba: <code>ana / ana123</code> (solicitante), <code>luis / luis123</code>
+    (solicitante), <code>rosa / rosa123</code> (responsable).
+  </p>
+</section>

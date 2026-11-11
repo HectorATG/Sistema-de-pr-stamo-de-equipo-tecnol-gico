@@ -1,0 +1,48 @@
+.barra {
+  background: var(--primario);
+  color: #fff;
+}
+.barra-contenido {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.marca {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+nav {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+nav a {
+  color: #d7e6e1;
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+}
+nav a.activo {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+.sesion button {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.contenido {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}

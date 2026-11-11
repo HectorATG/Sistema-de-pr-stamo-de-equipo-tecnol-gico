@@ -1,0 +1,95 @@
+<h1>{{ esResponsable ? 'Préstamos' : 'Mis préstamos' }}</h1>
+<p class="subtitulo">
+  {{
+    esResponsable
+      ? 'Autoriza o rechaza solicitudes y registra entregas y devoluciones.'
+      : 'Estado e historial de tus solicitudes.'
+  }}
+</p>
+
+@if (error) {
+  <div class="mensaje error">{{ error }}</div>
+}
+@if (exito) {
+  <div class="mensaje exito">{{ exito }}</div>
+}
+
+<section class="tarjeta">
+  @if (cargando) {
+    <p class="vacio">Cargando…</p>
+  } @else if (prestamos.length === 0) {
+    <p class="vacio">Todavía no hay préstamos registrados.</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            @if (esResponsable) {
+              <th>Solicitante</th>
+            }
+            <th>Equipo</th>
+            <th>Periodo</th>
+            <th>Entrega</th>
+            <th>Devolución</th>
+            <th>Estado</th>
+            <th>Equipo está</th>
+            @if (esResponsable) {
+              <th>Acciones</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of prestamos; track p.id) {
+            <tr>
+              <td>{{ p.id }}</td>
+              @if (esResponsable) {
+                <td>{{ p.solicitante }}</td>
+              }
+              <td>{{ p.equipo }}</td>
+              <td>{{ p.fechaInicio }} a {{ p.fechaFin }}</td>
+              <td>{{ p.fechaEntrega ?? '—' }}</td>
+              <td>{{ p.fechaDevolucion ?? '—' }}</td>
+              <td><span [class]="'etiqueta ' + p.estado">{{ p.estado }}</span></td>
+              <td><span [class]="'etiqueta ' + p.estadoEquipo">{{ p.estadoEquipo }}</span></td>
+              @if (esResponsable) {
+                <td>
+                  <div class="acciones">
+                    @switch (p.estado) {
+                      @case ('SOLICITADO') {
+                        <button type="button" [disabled]="enProceso === p.id" (click)="cambiar(p, 'autorizar')">
+                          Autorizar
+                        </button>
+                        <button
+                          type="button"
+                          class="peligro"
+                          [disabled]="enProceso === p.id"
+                          (click)="cambiar(p, 'rechazar')"
+                        >
+                          Rechazar
+                        </button>
+                      }
+                      @case ('AUTORIZADO') {
+                        <button type="button" [disabled]="enProceso === p.id" (click)="cambiar(p, 'entregar')">
+                          Registrar entrega
+                        </button>
+                      }
+                      @case ('ENTREGADO') {
+                        <button type="button" [disabled]="enProceso === p.id" (click)="cambiar(p, 'devolver')">
+                          Registrar devolución
+                        </button>
+                      }
+                      @default {
+                        <span class="vacio">—</span>
+                      }
+                    }
+                  </div>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
