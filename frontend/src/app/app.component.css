@@ -1,30 +1,37 @@
 .barra {
-  background: var(--primario);
+  background: linear-gradient(115deg, var(--primario-oscuro), var(--primario));
   color: #fff;
+  box-shadow: 0 2px 10px rgb(8 69 57 / 16%);
 }
 .barra-contenido {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 12px 16px;
+  padding: 14px 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 24px;
+  gap: 14px 28px;
 }
 .marca {
-  font-weight: 600;
-  font-size: 1.05rem;
+  font-weight: 700;
+  font-size: 1.08rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 nav {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   flex: 1;
 }
 nav a {
-  color: #d7e6e1;
+  color: rgb(255 255 255 / 78%);
   text-decoration: none;
-  padding: 4px 0;
+  padding: 7px 0;
   border-bottom: 2px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+nav a:hover {
+  color: #fff;
 }
 nav a.activo {
   color: #fff;
@@ -36,13 +43,54 @@ nav a.activo {
   gap: 12px;
   font-size: 0.9rem;
 }
+.sesion span {
+  color: rgb(255 255 255 / 88%);
+}
 .sesion button {
   background: transparent;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.6);
 }
+.sesion button:hover {
+  background: rgb(255 255 255 / 12%);
+}
 .contenido {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 16px 48px;
+  padding: 32px 20px 56px;
+}
+
+@media (max-width: 700px) {
+  .barra-contenido {
+    padding: 14px 16px;
+    gap: 10px 18px;
+  }
+
+  nav {
+    order: 3;
+    flex-basis: 100%;
+    gap: 18px;
+  }
+
+  .sesion {
+    margin-left: auto;
+  }
+
+  .contenido {
+    padding: 24px 16px 40px;
+  }
+}
+
+@media (max-width: 420px) {
+  .marca {
+    font-size: 1rem;
+  }
+
+  .sesion {
+    gap: 8px;
+  }
+
+  .sesion span {
+    font-size: 0.8rem;
+  }
 }

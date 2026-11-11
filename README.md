@@ -22,8 +22,8 @@ Abrir dos terminales.
 **1. Backend (puerto 8080)**
 
 ```bash
-cd backend
-mvn spring-boot:run
+
+
 ```
 
 Está listo cuando la consola muestra `Started PrestamosApplication`.
