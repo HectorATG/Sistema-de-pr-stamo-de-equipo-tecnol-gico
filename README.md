@@ -22,7 +22,7 @@ Abrir dos terminales.
 **1. Backend (puerto 8080)**
 
 ```bash
-
+  
 
 ```
 
