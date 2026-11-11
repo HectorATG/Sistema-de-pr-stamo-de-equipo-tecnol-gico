@@ -1,0 +1,923 @@
+{
+  "info": {
+    "name": "Evidencia 6 - Préstamo de equipo",
+    "description": "Ejecutar las carpetas en orden con el backend recién arrancado (H2 se reinicia en cada arranque, así que los ids empiezan en 1).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Inicio de sesión",
+      "item": [
+        {
+          "name": "Quién soy (ana, solicitante)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "200 con el usuario y su rol.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Quién soy (rosa, responsable)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Flujo obligatorio",
+      "item": [
+        {
+          "name": "1. Consultar disponibilidad",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/equipos?estado=DISPONIBLE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "equipos"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "DISPONIBLE"
+                }
+              ]
+            },
+            "description": "200. Seis equipos DISPONIBLE.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Solicitar equipo 1 (ana)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "201. Préstamo 1 en estado SOLICITADO.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipoId\": 1,\n  \"fechaInicio\": \"2026-11-12\",\n  \"fechaFin\": \"2026-11-14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "2b. Solicitar el mismo equipo (luis)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "201. Préstamo 2 en estado SOLICITADO; sirve para probar RN1 más adelante.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "luis",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "luis123",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipoId\": 1,\n  \"fechaInicio\": \"2026-11-12\",\n  \"fechaFin\": \"2026-11-14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "3-4. Validar y autorizar préstamo 1",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/1/autorizar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "1",
+                "autorizar"
+              ]
+            },
+            "description": "200. Estado AUTORIZADO.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "RN1. Autorizar préstamo 2 (mismo equipo) -> 409",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/2/autorizar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "2",
+                "autorizar"
+              ]
+            },
+            "description": "409 Conflict: el equipo ya tiene un préstamo activo.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Registrar entrega del préstamo 1",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/1/entregar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "1",
+                "entregar"
+              ]
+            },
+            "description": "200. Préstamo ENTREGADO y equipo PRESTADO.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5b. Disponibilidad después de entregar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/equipos?estado=DISPONIBLE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "equipos"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "DISPONIBLE"
+                }
+              ]
+            },
+            "description": "200. Ya solo cinco equipos; el 1 no aparece.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Consultar préstamo 1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "1"
+              ]
+            },
+            "description": "200. Estado ENTREGADO con fecha de entrega.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6b. Mis préstamos (ana)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/mios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "mios"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5c. Registrar devolución del préstamo 1",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/1/devolver",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "1",
+                "devolver"
+              ]
+            },
+            "description": "200. Préstamo DEVUELTO y equipo DISPONIBLE.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6c. Historial completo (responsable)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "200. RN4: los préstamos se conservan con su estado.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rechazar préstamo 2",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/2/rechazar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "2",
+                "rechazar"
+              ]
+            },
+            "description": "200. Estado RECHAZADO.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Seguridad",
+      "item": [
+        {
+          "name": "Sin credenciales -> 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/equipos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "equipos"
+              ]
+            },
+            "description": "401 Unauthorized.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Contraseña incorrecta -> 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/equipos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "incorrecta",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Solicitante intenta autorizar -> 403",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/1/autorizar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "1",
+                "autorizar"
+              ]
+            },
+            "description": "403 Forbidden: solo el responsable autoriza.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Responsable intenta solicitar -> 403",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipoId\": 1,\n  \"fechaInicio\": \"2026-11-12\",\n  \"fechaFin\": \"2026-11-14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitante intenta ver todos los préstamos -> 403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Validaciones",
+      "item": [
+        {
+          "name": "Préstamo inexistente -> 404",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "999"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Solicitud sin fechas -> 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipoId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Fecha fin anterior al inicio -> 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "ana",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "ana123",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipoId\": 2,\n  \"fechaInicio\": \"2026-11-14\",\n  \"fechaFin\": \"2026-11-12\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Entregar un préstamo no autorizado -> 409",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/prestamos/2/entregar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "prestamos",
+                "2",
+                "entregar"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "rosa",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "rosa123",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
