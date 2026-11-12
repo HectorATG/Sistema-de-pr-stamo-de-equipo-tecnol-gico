@@ -42,7 +42,21 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | Ana inicia sesión como solicitante\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.include({ username: 'ana', rol: 'SOLICITANTE' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Quién soy (rosa, responsable)",
@@ -78,7 +92,21 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | Rosa inicia sesión como responsable\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.include({ username: 'rosa', rol: 'RESPONSABLE' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -124,7 +152,23 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | El catálogo incluye el equipo 1 y solo muestra equipos disponibles\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const equipos = pm.response.json();",
+                  "  pm.expect(equipos.some(equipo => equipo.id === 1)).to.equal(true);",
+                  "  pm.expect(equipos.every(equipo => equipo.estado === 'DISPONIBLE')).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "2. Solicitar equipo 1 (ana)",
@@ -173,7 +217,25 @@
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201 | Se registra la solicitud de Ana con sus fechas\", () => {",
+                  "  pm.response.to.have.status(201);",
+                  "  const solicitud = JSON.parse(pm.request.body.raw);",
+                  "  pm.expect(pm.response.json()).to.include({",
+                  "    id: 1, solicitanteUsername: 'ana', estado: 'SOLICITADO',",
+                  "    equipoId: solicitud.equipoId, fechaInicio: solicitud.fechaInicio, fechaFin: solicitud.fechaFin",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "2b. Solicitar el mismo equipo (luis)",
@@ -222,7 +284,21 @@
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201 | Luis registra una solicitud para el mismo equipo\", () => {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.expect(pm.response.json()).to.include({ id: 2, solicitanteUsername: 'luis', equipoId: 1, estado: 'SOLICITADO' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "3-4. Validar y autorizar préstamo 1",
@@ -259,7 +335,21 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | El responsable autoriza el primer préstamo\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.include({ id: 1, estado: 'AUTORIZADO' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "RN1. Autorizar préstamo 2 (mismo equipo) -> 409",
@@ -296,7 +386,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409 | RN1: se rechaza la autorización de otro préstamo activo para el mismo equipo\", () => {",
+                  "  pm.response.to.have.status(409);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "5. Registrar entrega del préstamo 1",
@@ -333,7 +436,21 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | RN3: la entrega marca el préstamo como ENTREGADO y el equipo como PRESTADO\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.include({ id: 1, estado: 'ENTREGADO', estadoEquipo: 'PRESTADO' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "5b. Disponibilidad después de entregar",
@@ -374,7 +491,22 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | RN3: el equipo prestado ya no aparece entre los disponibles\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const equipos = pm.response.json();",
+                  "  pm.expect(equipos.some(equipo => equipo.id === 1)).to.equal(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "6. Consultar préstamo 1",
@@ -410,7 +542,23 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | El detalle conserva el estado y la fecha de entrega\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const prestamo = pm.response.json();",
+                  "  pm.expect(prestamo).to.include({ id: 1, estado: 'ENTREGADO' });",
+                  "  pm.expect(prestamo.fechaEntrega).to.be.a('string').and.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "6b. Mis préstamos (ana)",
@@ -446,7 +594,23 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | Ana consulta su préstamo y solo ve solicitudes propias\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const prestamos = pm.response.json();",
+                  "  pm.expect(prestamos.some(prestamo => prestamo.id === 1)).to.equal(true);",
+                  "  pm.expect(prestamos.every(prestamo => prestamo.solicitanteUsername === 'ana')).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "5c. Registrar devolución del préstamo 1",
@@ -483,7 +647,23 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | RN3: la devolución deja el préstamo DEVUELTO y el equipo DISPONIBLE\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const prestamo = pm.response.json();",
+                  "  pm.expect(prestamo).to.include({ id: 1, estado: 'DEVUELTO', estadoEquipo: 'DISPONIBLE' });",
+                  "  pm.expect(prestamo.fechaDevolucion).to.be.a('string').and.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "6c. Historial completo (responsable)",
@@ -518,7 +698,23 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | RN4: el historial conserva la devolución y la segunda solicitud sigue pendiente\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const prestamos = pm.response.json();",
+                  "  pm.expect(prestamos.find(prestamo => prestamo.id === 1)).to.include({ estado: 'DEVUELTO' });",
+                  "  pm.expect(prestamos.find(prestamo => prestamo.id === 2)).to.include({ estado: 'SOLICITADO' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Rechazar préstamo 2",
@@ -555,7 +751,21 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200 | El responsable rechaza la segunda solicitud\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.include({ id: 2, estado: 'RECHAZADO' });",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -583,7 +793,20 @@
             "auth": {
               "type": "noauth"
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401 | Se exige autenticación para consultar equipos\", () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Contraseña incorrecta -> 401",
@@ -618,7 +841,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401 | Se rechazan las credenciales incorrectas\", () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Solicitante intenta autorizar -> 403",
@@ -655,7 +891,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403 | El solicitante no tiene permiso para autorizar\", () => {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Responsable intenta solicitar -> 403",
@@ -704,7 +953,20 @@
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403 | El responsable no tiene permiso para crear solicitudes\", () => {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Solicitante intenta ver todos los préstamos -> 403",
@@ -739,7 +1001,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403 | El solicitante no tiene acceso al historial completo\", () => {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -780,7 +1055,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404 | Consultar un préstamo inexistente devuelve 404\", () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Solicitud sin fechas -> 400",
@@ -829,7 +1117,20 @@
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400 | Se rechaza una solicitud sin fechas\", () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Fecha fin anterior al inicio -> 400",
@@ -878,7 +1179,20 @@
                 }
               }
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400 | Se rechaza una fecha de fin anterior a la de inicio\", () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Entregar un préstamo no autorizado -> 409",
@@ -915,7 +1229,20 @@
                 }
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409 | No se puede entregar un préstamo sin autorización\", () => {",
+                  "  pm.response.to.have.status(409);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     }

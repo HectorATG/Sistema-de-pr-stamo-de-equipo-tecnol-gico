@@ -22,8 +22,8 @@ Abrir dos terminales.
 **1. Backend (puerto 8080)**
 
 ```bash
-  
-
+cd backend
+mvn spring-boot:run
 ```
 
 Está listo cuando la consola muestra `Started PrestamosApplication`.
@@ -64,9 +64,10 @@ Se cargan al arrancar el backend (`DatosIniciales.java`), junto con seis equipos
 
 1. Importar `postman/Evidencia6_Prestamos.postman_collection.json`.
 2. Reiniciar el backend (así los identificadores empiezan en 1).
-3. Ejecutar las carpetas en orden. La descripción de cada petición indica la respuesta esperada.
+3. Abrir **Run collection** en Postman y ejecutar una iteración con todas las peticiones en el orden original.
+4. Revisar el resumen de pruebas y guardar una captura para la matriz de correspondencia.
 
-Cada petición ya lleva sus credenciales en la pestaña *Authorization* (Basic Auth).
+Las pruebas verifican los códigos HTTP y los estados del flujo de préstamo. Los casos de seguridad y validación pasan cuando reciben el código de rechazo esperado. Las credenciales de prueba vienen configuradas en *Authorization*.
 
 ## Endpoints
 

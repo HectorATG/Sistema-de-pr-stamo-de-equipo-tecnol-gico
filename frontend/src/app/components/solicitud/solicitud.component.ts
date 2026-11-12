@@ -25,6 +25,14 @@ export class SolicitudComponent implements OnInit {
     private router: Router,
   ) {}
 
+  get fechasInvertidas(): boolean {
+    return Boolean(this.fechaInicio && this.fechaFin && this.fechaFin < this.fechaInicio);
+  }
+
+  get puedeEnviar(): boolean {
+    return Boolean(this.equipo && this.fechaInicio && this.fechaFin && !this.fechasInvertidas && !this.enviando);
+  }
+
   ngOnInit(): void {
     this.equipoId = Number(this.route.snapshot.paramMap.get('equipoId'));
     this.api.equiposDisponibles().subscribe({
@@ -39,6 +47,9 @@ export class SolicitudComponent implements OnInit {
   }
 
   enviar(): void {
+    if (!this.puedeEnviar) {
+      return;
+    }
     this.error = '';
     this.enviando = true;
     this.api
