@@ -60,6 +60,14 @@ Se cargan al arrancar el backend (`DatosIniciales.java`), junto con seis equipos
 8. **Registrar devolución**: el préstamo pasa a DEVUELTO y el equipo vuelve a DISPONIBLE.
 9. Entrar como `ana` y abrir **Mis préstamos** (paso 6): se ve el historial con fechas y estado.
 
+### Comprobar la validación de fechas
+
+1. Entrar como `ana` y pulsar **Solicitar** en un equipo disponible.
+2. Elegir una fecha de fin anterior a la de inicio. Debe aparecer un aviso debajo del campo **Fecha de fin** y el botón **Enviar solicitud** debe quedar deshabilitado.
+3. Corregir la fecha de fin para que sea igual o posterior a la de inicio. Al enviar, el préstamo debe aparecer en **Mis préstamos** con estado `SOLICITADO`.
+
+Como evidencia se puede guardar una captura del aviso y otra del préstamo registrado tras corregir las fechas.
+
 ## Pruebas con Postman
 
 1. Importar `postman/Evidencia6_Prestamos.postman_collection.json`.
@@ -67,7 +75,13 @@ Se cargan al arrancar el backend (`DatosIniciales.java`), junto con seis equipos
 3. Abrir **Run collection** en Postman y ejecutar una iteración con todas las peticiones en el orden original.
 4. Revisar el resumen de pruebas y guardar una captura para la matriz de correspondencia.
 
-Las pruebas verifican los códigos HTTP y los estados del flujo de préstamo. Los casos de seguridad y validación pasan cuando reciben el código de rechazo esperado. Las credenciales de prueba vienen configuradas en *Authorization*.
+Las credenciales de prueba vienen configuradas en *Authorization*. El resumen de Postman muestra el resultado de estas comprobaciones.
+
+- La entrega cambia el equipo a `PRESTADO` y lo retira de la lista de equipos disponibles. La devolución lo deja `DISPONIBLE` y el préstamo permanece en el historial.
+- Autorizar una segunda solicitud para un equipo con un préstamo activo devuelve `409`.
+- Una petición sin credenciales recibe `401` y un solicitante que intenta autorizar recibe `403`. Si se envían fechas invertidas directamente a la API, la respuesta esperada es `400`.
+
+En los casos de rechazo, la prueba pasa al recibir el código esperado.
 
 ## Endpoints
 
