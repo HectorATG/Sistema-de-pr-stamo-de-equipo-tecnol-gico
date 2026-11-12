@@ -15,10 +15,25 @@
 }
 
 <section class="tarjeta">
+  @let filtrados = prestamosFiltrados;
+  @if (!cargando && prestamos.length > 0) {
+    <div class="filtro-estado">
+      <label for="estado-prestamo">Filtrar por estado</label>
+      <select id="estado-prestamo" [(ngModel)]="estadoSeleccionado">
+        <option value="">Todos los estados</option>
+        @for (estado of estados; track estado) {
+          <option [value]="estado">{{ estado | titlecase }}</option>
+        }
+      </select>
+    </div>
+  }
+
   @if (cargando) {
     <p class="vacio">Cargando…</p>
   } @else if (prestamos.length === 0) {
     <p class="vacio">Todavía no hay préstamos registrados.</p>
+  } @else if (filtrados.length === 0) {
+    <p class="vacio" role="status">No hay préstamos con este estado.</p>
   } @else {
     <div class="tabla-contenedor">
       <table>
@@ -40,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (p of prestamos; track p.id) {
+          @for (p of filtrados; track p.id) {
             <tr>
               <td>{{ p.id }}</td>
               @if (esResponsable) {

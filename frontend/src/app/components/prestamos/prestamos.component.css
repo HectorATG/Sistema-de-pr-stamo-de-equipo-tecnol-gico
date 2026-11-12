@@ -1,0 +1,20 @@
+.filtro-estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+}
+
+.filtro-estado label {
+  margin: 0;
+}
+
+.filtro-estado select {
+  font: inherit;
+  padding: 7px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  color: var(--texto);
+  background-color: var(--tarjeta);
+}

@@ -1,5 +1,7 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AccionPrestamo, Prestamo } from '../../models/modelos';
+import { FormsModule } from '@angular/forms';
+import { AccionPrestamo, EstadoPrestamo, Prestamo } from '../../models/modelos';
 import { ApiService } from '../../services/api.service';
 
 /**
@@ -9,9 +11,13 @@ import { ApiService } from '../../services/api.service';
  */
 @Component({
   selector: 'app-prestamos',
+  imports: [FormsModule, TitleCasePipe],
   templateUrl: './prestamos.component.html',
+  styleUrl: './prestamos.component.css',
 })
 export class PrestamosComponent implements OnInit {
+  readonly estados: readonly EstadoPrestamo[] = ['SOLICITADO', 'AUTORIZADO', 'ENTREGADO', 'DEVUELTO', 'RECHAZADO'];
+  estadoSeleccionado: EstadoPrestamo | '' = '';
   prestamos: Prestamo[] = [];
   error = '';
   exito = '';
@@ -22,6 +28,11 @@ export class PrestamosComponent implements OnInit {
 
   get esResponsable(): boolean {
     return this.api.usuario()?.rol === 'RESPONSABLE';
+  }
+
+  get prestamosFiltrados(): Prestamo[] {
+    const estado = this.estadoSeleccionado;
+    return estado ? this.prestamos.filter((prestamo) => prestamo.estado === estado) : this.prestamos;
   }
 
   ngOnInit(): void {
